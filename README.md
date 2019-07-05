@@ -35,9 +35,13 @@ Access to the active span is straightforward:
 ```java
 io.opentracing.Tracer tracer = ...;
 ...
-Span span = tracer.scopeManager().activeSpan();
-if (span != null) {
-    span.log("...");
+Span span = tracer.buildSpan("someWork");
+tracer.makeActive(span);
+try {
+    // Do things.
+} finally {
+    span.finish();
+    span.deactivate();
 }
 ```
 
