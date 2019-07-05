@@ -33,16 +33,7 @@ It's inconvenient to pass an active `Span` from function to function manually, s
 Access to the active span is straightforward:
 
 ```java
-io.opentracing.Tracer tracer = ...;
-...
-Span span = tracer.buildSpan("someWork");
-tracer.makeActive(span);
-try {
-    // Do things.
-} finally {
-    span.finish();
-    span.deactivate();
-}
+tracer.active().deactivate();
 ```
 
 ### Starting a new Span
