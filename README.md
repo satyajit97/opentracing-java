@@ -33,7 +33,7 @@ It's inconvenient to pass an active `Span` from function to function manually, s
 Access to the active span is straightforward:
 
 ```java
-tracer.active().deactivate();
+lightningTracer.closeActiveSpan();
 ```
 
 ### Starting a new Span
@@ -41,16 +41,16 @@ tracer.active().deactivate();
 The common case starts a `Span` and then sets it as the active instance via `ScopeManager`:
 
 ```java
-io.opentracing.Tracer tracer = ...;
+com.gs.ficc.risk.tracing lightningTracer = ...;
 ...
-Span span = tracer.buildSpan("someWork").start();
-try (Scope scope = tracer.scopeManager().activate(span)) {
+Span span = tracer.buildSpan("someWork");
+try {
     // Do things.
 } catch(Exception ex) {
     Tags.ERROR.set(span, true);
     span.log(Map.of(Fields.EVENT, "error", Fields.ERROR_OBJECT, ex, Fields.MESSAGE, ex.getMessage()));
 } finally {
-    span.finish();
+    lightningTracer.closeActiveSpan();
 }
 ```
 
