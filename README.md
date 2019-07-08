@@ -43,12 +43,12 @@ The common case starts a `Span` and then sets it as the active instance via `Sco
 ```java
 com.gs.ficc.risk.tracing lightningTracer = ...;
 ...
-Span span = tracer.buildSpan("someWork");
+Span span = lightningTracer.buildSpan("someWork");
 try {
     // Do things.
 } catch(Exception ex) {
-    Tags.ERROR.set(span, true);
-    span.log(Map.of(Fields.EVENT, "error", Fields.ERROR_OBJECT, ex, Fields.MESSAGE, ex.getMessage()));
+    lightningTracer.logError(span,message);
+    
 } finally {
     lightningTracer.closeActiveSpan();
 }
